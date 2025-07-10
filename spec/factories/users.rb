@@ -1,7 +1,7 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
-    name "MyString"
-    email "MyString"
-    device "MyString"
+    name { "MyString" }
+    email { "MyString" }
+    device { "MyString" }
   end
 end

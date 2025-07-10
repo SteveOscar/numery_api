@@ -17,7 +17,7 @@ RSpec.describe "Scores API", type: :request do
     }
   end
 
-  describe "GET /high_scores" do
+  describe "GET /scores/:device" do
     it "pulls the high scores" do
       user1 = User.create!(valid_user_attributes)
       user2 = User.create!(valid_user_attributes2)
@@ -27,17 +27,19 @@ RSpec.describe "Scores API", type: :request do
       user1.scores.create!(score: 9)
       user1.scores.create!(score: 82)
 
-      get "/high_scores"
+      get "/scores/#{user1.device}"
+      puts response.body
       result = JSON.parse(response.body)
-      expect(result.length).to eq(5)
-      expect(result.last['score']).to eq(82)
+      expect(result['high_scores'].length).to eq(5)
+      expect(result['high_scores'].first.last).to eq(82)
     end
   end
 
-  describe "POST /scores" do
+  describe "POST /scores/new/:device/" do
     it "creates a high score" do
       user = User.create!(valid_user_attributes)
-      post "/scores", params: { user_id: user.id, device: user.device, score: 99 }
+      post "/scores/new/#{user.device}/", params: { user: user.id, device: user.device, score: 99 }
+      puts response.body
       result = JSON.parse(response.body)
       expect(result['score']).to eq(99)
     end

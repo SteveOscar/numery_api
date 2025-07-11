@@ -8,6 +8,7 @@ gem 'rack-cors'
 gem 'fast_jsonapi'
 gem 'rack-attack'
 gem 'puma'
+gem 'dotenv-rails', groups: [:development, :test]
 
 group :development, :test do
   gem 'byebug'

@@ -1,2 +1,12 @@
 class ApplicationController < ActionController::API
+  before_action :authenticate_api_key!
+
+  private
+
+  def authenticate_api_key!
+    api_key = request.headers['X-Api-Key']
+    unless api_key && ENV['API_SECRET_KEY'] && ActiveSupport::SecurityUtils.secure_compare(api_key, ENV['API_SECRET_KEY'])
+      render json: { error: 'Unauthorized' }, status: :unauthorized
+    end
+  end
 end

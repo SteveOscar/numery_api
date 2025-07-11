@@ -10,3 +10,5 @@ class ApplicationController < ActionController::API
     end
   end
 end
+
+# NOTE: to test remote API: curl -i -H "X-Api-Key: API_SECRET_KEY" https://nemery-api-0db43f6e1ac2.herokuapp.com/users

@@ -30,8 +30,9 @@ RSpec.describe "Scores API", type: :request do
       get "/scores/#{user1.device}"
       puts response.body
       result = JSON.parse(response.body)
-      expect(result['high_scores'].length).to eq(5)
-      expect(result['high_scores'].first.last).to eq(82)
+      high_scores = result['data']['high_scores']
+      expect(high_scores.length).to eq(5)
+      expect(high_scores.first['score']).to eq(82)
     end
   end
 
@@ -41,7 +42,8 @@ RSpec.describe "Scores API", type: :request do
       post "/scores/new/#{user.device}/", params: { user: user.id, device: user.device, score: 99 }
       puts response.body
       result = JSON.parse(response.body)
-      expect(result['score']).to eq(99)
+      score = result['data']['data']['attributes']['score']
+      expect(score).to eq(99)
     end
   end
 end 

@@ -1,10 +1,12 @@
 source "https://rubygems.org"
 gem 'rails', '~> 7.0'
-gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'pg'
 gem 'faraday'
+gem 'rack-cors'
+gem 'fast_jsonapi'
+gem 'rack-attack'
 
 group :development, :test do
   gem 'byebug'

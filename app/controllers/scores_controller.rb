@@ -1,19 +1,21 @@
 class ScoresController < ApplicationController
+  include ApiResponse
+  
   before_action :set_user, only: [:create]
   before_action :clean_data, only: [:high_scores]
 
   def high_scores
     results = get_high_scores
-    render json: results
+    render_success(results)
   end
 
   def create
     @score = @user.scores.new(score: score_params['score'])
 
     if @score.save
-      render json: @score
+      render_success(ScoreSerializer.new(@score).serializable_hash, status: :created)
     else
-      render json: @score.errors, status: :unprocessable_entity
+      render_errors(@score.errors.full_messages, status: :unprocessable_entity)
     end
   end
 
@@ -22,9 +24,22 @@ class ScoresController < ApplicationController
     def get_high_scores
       results = {}
       user = User.find_by(device: params['device'])
-      scores = Score.order('score').reverse_order.limit(5)
-      results['high_scores'] = scores.map { |s| [s.user.name, s.score] }
-      results['user_score'] = (user && user.scores.length > 0) ? user.scores.order('score').last.score : 0
+      scores = Score.includes(:user).order('score DESC').limit(5)
+      
+      results['high_scores'] = scores.map do |s| 
+        {
+          name: s.user.name,
+          score: s.score,
+          device: s.user.device
+        }
+      end
+      
+      results['user_score'] = if user && user.scores.any?
+        user.scores.maximum(:score)
+      else
+        0
+      end
+      
       results
     end
 

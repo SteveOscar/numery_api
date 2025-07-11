@@ -28,8 +28,9 @@ RSpec.describe "Users API", type: :request do
       user = User.create!(valid_attributes)
       get "/users"
       puts response.body
-      result = JSON.parse(response.body)[0]
-      expect(result['name']).to eq(user.name)
+      result = JSON.parse(response.body)
+      user_data = result['data']['data'].first['attributes']
+      expect(user_data['name']).to eq(user.name)
     end
   end
 
@@ -39,7 +40,8 @@ RSpec.describe "Users API", type: :request do
       get "/users/#{user.device}"
       puts response.body
       result = JSON.parse(response.body)
-      expect(result['name']).to eq(user.name)
+      user_data = result['data']['data']['attributes']
+      expect(user_data['name']).to eq(user.name)
     end
   end
 
@@ -64,28 +66,32 @@ RSpec.describe "Users API", type: :request do
         post "/users", params: invalid_attributes.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
         puts response.body
         expect(User.first).to be(nil)
-        expect(JSON.parse(response.body)['errors']['name'].first).to eq("can't be blank")
+        result = JSON.parse(response.body)
+        expect(result['errors']).to include("Name can't be blank")
       end
 
       it "can't create with no device" do
         post "/users", params: invalid_attributes2.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
         puts response.body
         expect(User.first).to be(nil)
-        expect(JSON.parse(response.body)['errors']['device'].first).to eq("can't be blank")
+        result = JSON.parse(response.body)
+        expect(result['errors']).to include("Device can't be blank")
       end
 
       it "can't duplicate name" do
         User.create!(valid_attributes)
         post "/users", params: valid_attributes.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
         puts response.body
-        expect(JSON.parse(response.body)['errors']['name'].first).to eq("has already been taken")
+        result = JSON.parse(response.body)
+        expect(result['errors']).to include("Name has already been taken")
       end
 
       it "can't duplicate device" do
         User.create!(valid_attributes)
         post "/users", params: valid_attributes.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
         puts response.body
-        expect(JSON.parse(response.body)['errors']['device'].first).to eq("has already been taken")
+        result = JSON.parse(response.body)
+        expect(result['errors']).to include("Device has already been taken")
       end
     end
   end

@@ -22,6 +22,7 @@ end
 group :development do
   gem 'web-console', '~> 4.0'
   gem 'spring'
+  gem 'annotate'
 end
 
 ruby '3.2.0'

@@ -27,6 +27,7 @@ RSpec.describe "Users API", type: :request do
     it "returns all users" do
       user = User.create!(valid_attributes)
       get "/users"
+      puts response.body
       result = JSON.parse(response.body)[0]
       expect(result['name']).to eq(user.name)
     end
@@ -35,7 +36,8 @@ RSpec.describe "Users API", type: :request do
   describe "GET /users/:id" do
     it "returns the requested user" do
       user = User.create!(valid_attributes)
-      get "/users/#{user.id}"
+      get "/users/#{user.device}"
+      puts response.body
       result = JSON.parse(response.body)
       expect(result['name']).to eq(user.name)
     end
@@ -45,12 +47,13 @@ RSpec.describe "Users API", type: :request do
     context "with valid params" do
       it "creates a new User" do
         expect {
-          post "/users", params: { user: valid_attributes }
+          post "/users", params: valid_attributes.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
         }.to change(User, :count).by(1)
       end
 
       it "returns the newly created user" do
-        post "/users", params: { user: valid_attributes }
+        post "/users", params: valid_attributes.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
+        puts response.body
         expect(User.first).to be_a(User)
         expect(User.first).to be_persisted
       end
@@ -58,27 +61,31 @@ RSpec.describe "Users API", type: :request do
 
     context "with invalid params" do
       it "can't create with no name" do
-        post "/users", params: { user: invalid_attributes }
+        post "/users", params: invalid_attributes.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
+        puts response.body
         expect(User.first).to be(nil)
-        expect(JSON.parse(response.body)['name'].first).to eq("can't be blank")
+        expect(JSON.parse(response.body)['errors']['name'].first).to eq("can't be blank")
       end
 
       it "can't create with no device" do
-        post "/users", params: { user: invalid_attributes2 }
+        post "/users", params: invalid_attributes2.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
+        puts response.body
         expect(User.first).to be(nil)
-        expect(JSON.parse(response.body)['device'].first).to eq("can't be blank")
+        expect(JSON.parse(response.body)['errors']['device'].first).to eq("can't be blank")
       end
 
       it "can't duplicate name" do
         User.create!(valid_attributes)
-        post "/users", params: { user: valid_attributes }
-        expect(JSON.parse(response.body)['name'].first).to eq("has already been taken")
+        post "/users", params: valid_attributes.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
+        puts response.body
+        expect(JSON.parse(response.body)['errors']['name'].first).to eq("has already been taken")
       end
 
       it "can't duplicate device" do
         User.create!(valid_attributes)
-        post "/users", params: { user: valid_attributes }
-        expect(JSON.parse(response.body)['device'].first).to eq("has already been taken")
+        post "/users", params: valid_attributes.to_json, headers: { 'CONTENT_TYPE' => 'application/json' }
+        puts response.body
+        expect(JSON.parse(response.body)['errors']['device'].first).to eq("has already been taken")
       end
     end
   end

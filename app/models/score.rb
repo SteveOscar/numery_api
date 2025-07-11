@@ -13,12 +13,10 @@ class Score < ApplicationRecord
   
   validates :score, presence: true, numericality: { greater_than: 0 }
   
-  # Scopes for common queries
   scope :high_scores, ->(limit = 10) { order(score: :desc).limit(limit) }
   scope :recent, ->(limit = 10) { order(created_at: :desc).limit(limit) }
   scope :by_user, ->(user) { where(user: user) }
   
-  # Instance methods
   def rank
     Score.where('score > ?', score).count + 1
   end

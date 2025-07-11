@@ -7,6 +7,7 @@ gem 'faraday'
 gem 'rack-cors'
 gem 'fast_jsonapi'
 gem 'rack-attack'
+gem 'puma'
 
 group :development, :test do
   gem 'byebug'

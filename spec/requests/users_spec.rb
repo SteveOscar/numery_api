@@ -4,21 +4,21 @@ RSpec.describe "Users API", type: :request do
   let(:valid_attributes) do
     {
       name: 'steve',
-      email: 'fake@email.com',
+      # email: 'fake@email.com',
       device: 1243
     }
   end
 
   let(:invalid_attributes) do
     {
-      email: 'fake@email.com',
+      # email: 'fake@email.com',
       device: 1243
     }
   end
 
   let(:invalid_attributes2) do
     {
-      email: 'fake@email.com',
+      # email: 'fake@email.com',
       name: 'steve'
     }
   end

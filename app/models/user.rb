@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   validates :device, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true
-  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  # validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   
   # Scopes for common queries
   scope :with_scores, -> { joins(:scores).distinct }
@@ -46,7 +46,7 @@ class User < ApplicationRecord
   def self.find_by_device_or_create(device_params)
     find_or_create_by(device: device_params[:device]) do |user|
       user.name = device_params[:name]
-      user.email = device_params[:email]
+      # user.email = device_params[:email]
     end
   end
 end

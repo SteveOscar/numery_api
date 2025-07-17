@@ -1,6 +1,6 @@
 module ApiKeyRequestHelper
   def api_key_headers(extra_headers = {})
-    { 'X-Api-Key' => ENV['API_SECRET_KEY'] || 'test-api-key' }.merge(extra_headers)
+    { 'Nemery-Api-Key' => ENV['API_SECRET_KEY'] || 'test-api-key' }.merge(extra_headers)
   end
 end
 

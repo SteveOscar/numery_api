@@ -24,7 +24,7 @@ class ScoresController < ApplicationController
     def get_high_scores
       results = {}
       user = User.find_by(device: params['device'])
-      scores = Score.includes(:user).order('score DESC').limit(5)
+      scores = Score.includes(:user).order('score DESC').limit(20)
       
       results['high_scores'] = scores.map do |s| 
         {

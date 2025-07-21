@@ -28,3 +28,5 @@ group :development do
 end
 
 ruby '3.2.0'
+
+gem "fast-mcp", "~> 1.5"

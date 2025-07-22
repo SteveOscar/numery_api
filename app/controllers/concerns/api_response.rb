@@ -31,7 +31,7 @@ module ApiResponse
   end
 
   def not_found(exception)
-    render_error('Resource not found', status: :not_found)
+    render_error("Resource not found", status: :not_found)
   end
 
   def unprocessable_entity(exception)
@@ -39,6 +39,6 @@ module ApiResponse
   end
 
   def bad_request(exception)
-    render_error('Bad request', status: :bad_request)
+    render_error("Bad request", status: :bad_request)
   end
-end 
+end

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   include ApiResponse
-  
+
   # before_action :set_user, only: [:update, :destroy]
 
   # GET /users
@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     if @user
       render_success(UserSerializer.new(@user).serializable_hash)
     else
-      render_error('User not found', status: :not_found)
+      render_error("User not found", status: :not_found)
     end
   end
 
@@ -35,12 +35,13 @@ class UsersController < ApplicationController
   end
 
   private
-    # def set_user
-    #   @user = User.find(params[:id])
-    # end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:name, :email, :device)
-    end
+  # def set_user
+  #   @user = User.find(params[:id])
+  # end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:name, :email, :device)
+  end
 end

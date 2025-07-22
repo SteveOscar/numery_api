@@ -1,0 +1,9 @@
+  {
+    "mcpServers": {
+      "nemery-api": {
+"transport": "sse",
+      "url": "https://nemery-api-0db43f6e1ac2.herokuapp.com/mcp/sse",
+      "enabled": true
+      }
+    }
+  }

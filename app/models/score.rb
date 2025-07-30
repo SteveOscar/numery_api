@@ -11,7 +11,7 @@
 class Score < ApplicationRecord
   belongs_to :user
 
-  validates :score, presence: true, numericality: {greater_than: 0}
+  validates :score, presence: true, numericality: { greater_than: 0 }
 
   scope :high_scores, ->(limit = 10) { order(score: :desc).limit(limit) }
   scope :recent, ->(limit = 10) { order(created_at: :desc).limit(limit) }

@@ -35,10 +35,10 @@ class ScoresController < ApplicationController
     end
 
     results["user_score"] = if user && user.scores.any?
-      user.scores.maximum(:score)
-    else
-      0
-    end
+                              user.scores.maximum(:score)
+                            else
+                              0
+                            end
 
     results
   end
